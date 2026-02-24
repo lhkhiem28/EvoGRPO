@@ -474,6 +474,46 @@ class RayPPOTrainer:
                 dump_path=rollout_data_dir,
             )
 
+    def _log_rollout_to_json(self, batch: DataProto, reward_extra_infos_dict: dict):
+        """Append rollouts from the current training step to a single JSONL file.
+
+        Records are appended to ``trainer.default_local_dir/rollouts.jsonl`` — the
+        same directory that holds ``latest_checkpointed_iteration.txt``.  Each line
+        is a JSON object for one (prompt, response) pair in the batch.
+        """
+        output_dir = self.config.trainer.default_local_dir
+        os.makedirs(output_dir, exist_ok=True)
+
+        inputs = self.tokenizer.batch_decode(batch.batch["prompts"], skip_special_tokens=True)
+        outputs = self.tokenizer.batch_decode(batch.batch["responses"], skip_special_tokens=True)
+        scores = batch.batch["token_level_scores"].sum(-1).cpu().tolist()
+        ground_truths = [
+            item.non_tensor_batch.get("reward_model", {}).get("ground_truth", None) for item in batch
+        ]
+
+        n = len(inputs)
+        records = []
+        for i in range(n):
+            record = {
+                "step": self.global_steps,
+                "index": i,
+                "prompt": inputs[i],
+                "response": outputs[i],
+                "score": scores[i],
+                "ground_truth": ground_truths[i],
+            }
+            for k, v in reward_extra_infos_dict.items():
+                if len(v) == n:
+                    record[k] = v[i]
+            records.append(record)
+
+        filename = os.path.join(output_dir, "rollouts.jsonl")
+        with open(filename, "a", encoding="utf-8") as f:
+            for record in records:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+        print(f"Appended {n} rollouts to {filename}")
+
     def _maybe_log_val_generations(self, inputs, outputs, scores):
         """Log a table of validation samples to the configured logger (wandb or swanlab)"""
 
@@ -1142,6 +1182,9 @@ class RayPPOTrainer:
                     rollout_data_dir = self.config.trainer.get("rollout_data_dir", None)
                     if rollout_data_dir:
                         self._log_rollout_data(batch, reward_extra_infos_dict, timing_raw, rollout_data_dir)
+
+                    # Log rollouts to the checkpoint directory at every training step
+                    self._log_rollout_to_json(batch, reward_extra_infos_dict)
 
                 # validate
                 if (
