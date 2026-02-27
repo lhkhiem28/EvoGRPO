@@ -2,7 +2,7 @@ export WANDB_API_KEY="e9e462d100f1ec04aab88e70a25510f0f99d43a1"
 export ACCELERATE_LOG_LEVEL=info
 
 project_name="EvoGRPO"
-experiment_name="Qwen2.5-1.5B-MATH-GRPO"
+experiment_name="Qwen2.5-1.5B-GRPO-1"
 
 train_files="['../EvoGRPO-datasets/MATH/train.parquet']"
 val_files="['../EvoGRPO-datasets/MATH/test.parquet']"
@@ -16,7 +16,7 @@ PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     data.max_response_length=3072 \
     data.filter_overlong_prompts=True \
     data.truncation='error' \
-    actor_rollout_ref.model.path=Qwen/Qwen2.5-1.5B \
+    actor_rollout_ref.model.path=lhkhiem28/Qwen2.5-1.5B-GRPO-0 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.model.enable_gradient_checkpointing=True \
     actor_rollout_ref.actor.optim.lr=1e-6 \
@@ -34,20 +34,21 @@ PYTHONUNBUFFERED=1 python -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=8 \
     actor_rollout_ref.ref.fsdp_config.param_offload=True \
     actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=8 \
+    trainer.resume_mode='disable' \
     trainer.val_before_train=False \
-    trainer.total_epochs=2 \
+    trainer.total_epochs=1 \
     trainer.nnodes=1 \
     trainer.n_gpus_per_node=4 \
     trainer.logger=['console','wandb'] \
     trainer.project_name="$project_name" \
     trainer.experiment_name="$experiment_name" \
-    trainer.test_freq=56 \
-    trainer.save_freq=56 $@
+    trainer.test_freq=28 \
+    trainer.save_freq=28 $@
 
 PYTHONUNBUFFERED=1 python -m verl.model_merger merge \
     --backend fsdp \
-    --local_dir checkpoints/${project_name}/${experiment_name}/global_step_56/actor \
-    --target_dir checkpoints/${project_name}/${experiment_name}/global_step_56/actor/huggingface
-python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_56/actor/huggingface
+    --local_dir checkpoints/${project_name}/${experiment_name}/global_step_28/actor \
+    --target_dir checkpoints/${project_name}/${experiment_name}/global_step_28/actor/huggingface
+python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_28/actor/huggingface
 
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}
