@@ -11,9 +11,12 @@ def seed_everything(seed: int):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
 
-def make_map_fn(split):
+def make_map_fn(split, make_crossover=False):
     def process_fn(example, index):
-        instruction_following = "You FIRST think about the reasoning process step by step and then provide the user with the answer. Please enclose your final answer in the box: \\boxed{}. Please stop generating immediately after outputting the box."
+        if make_crossover:
+            instruction_following = "Given a question and 2 candidate solutions, please propose a new, distinct solution by performing a crossover between the candidate solutions. Only provide the solution with step-by-step reasoning and enclose the final answer in the box: \\boxed{}. Please stop generating immediately after outputting the box."
+        else:
+            instruction_following = "You FIRST think about the reasoning process step by step and then provide the user with the answer. Please enclose your final answer in the box: \\boxed{}. Please stop generating immediately after outputting the box."
 
         question = example.pop("question")
         if len(question) == 0:

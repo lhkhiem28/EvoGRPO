@@ -55,3 +55,5 @@ dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhie
 
 python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train" --make_crossover
 python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test" --make_crossover
+python preprocess.py --task "MATH" --split "train" --make_crossover
+python preprocess.py --task "MATH" --split "test" --make_crossover
