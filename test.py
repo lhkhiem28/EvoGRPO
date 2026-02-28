@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 temperature=0.6, top_p=0.95, 
             ))
             batch_outputs = [[output.text for output in outputs.outputs] for outputs in batch_outputs]
-            for outputs, ground_truth in zip(batch_outputs, [item["ground_truth"] for item in batch["reward_model"]]):
+            for prompt, outputs, ground_truth in zip(batch_prompts, batch_outputs, [item["ground_truth"] for item in batch["reward_model"]]):
                 retvals = []
                 for output in outputs:
                     retval, _ = math_reward.compute_score(output, ground_truth)

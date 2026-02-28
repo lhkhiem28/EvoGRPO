@@ -52,3 +52,6 @@ PYTHONUNBUFFERED=1 python -m verl.model_merger merge \
 python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/${project_name}/${experiment_name}/global_step_28/actor/huggingface
 
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}
+
+python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train" --make_crossover
+python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test" --make_crossover
