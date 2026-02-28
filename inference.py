@@ -39,8 +39,8 @@ if __name__ == "__main__":
             for prompt, outputs, ground_truth in zip(batch_prompts, batch_outputs, [item["ground_truth"] for item in batch["reward_model"]]):
                 question = prompt.replace("You FIRST think about the reasoning process step by step and then provide the user with the answer. Please enclose your final answer in the box: \\boxed{}. Please stop generating immediately after outputting the box.\n", "")
                 question += "\n\nBelow are 2 candidate solutions:"
-                for i, output in enumerate(outputs):
-                    question += f"\n\nThe candidate solution {i+1}: {output}"
+                for j, output in enumerate(outputs):
+                    question += f"\n\nThe candidate solution {j+1}: {output}"
                 dataset_evo.append({
                     "question": question,
                     "answer": ground_truth,
