@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--task")
-    parser.add_argument("--split")
+    parser.add_argument("--split", default="test")
     parser.add_argument("--make_crossover", action="store_true", default=False)
     parser.add_argument("--save_dir", default="../EvoGRPO-datasets")
     args = parser.parse_args()

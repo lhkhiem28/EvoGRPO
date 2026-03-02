@@ -55,9 +55,15 @@ python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}
 
 python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train"
-python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test"
-python preprocess.py --task "MATH" --split "train" --make_crossover
-python preprocess.py --task "MATH" --split "test" --make_crossover
+python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH"
+python preprocess.py --make_crossover --task "MATH" --split "train"
+python preprocess.py --make_crossover --task "MATH"
+python preprocess.py --make_crossover --task "AMC12"
+python preprocess.py --make_crossover --task "OlympiadBench"
+python preprocess.py --make_crossover --task "AIME24"
+python preprocess.py --make_crossover --task "AIME25"
+python preprocess.py --make_crossover --task "Minerva"
+python preprocess.py --make_crossover --task "GPQA"
 
 project_name="EvoGRPO"
 experiment_name="Qwen2.5-1.5B-GRPO-evo-1"
@@ -113,8 +119,14 @@ python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}
 
 python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train"
-python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test"
-python preprocess.py --task "MATH" --split "train" --make_crossover
-python preprocess.py --task "MATH" --split "test" --make_crossover
+python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH"
+python preprocess.py --make_crossover --task "MATH" --split "train"
+python preprocess.py --make_crossover --task "MATH"
+python preprocess.py --make_crossover --task "AMC12"
+python preprocess.py --make_crossover --task "OlympiadBench"
+python preprocess.py --make_crossover --task "AIME24"
+python preprocess.py --make_crossover --task "AIME25"
+python preprocess.py --make_crossover --task "Minerva"
+python preprocess.py --make_crossover --task "GPQA"
 
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover
