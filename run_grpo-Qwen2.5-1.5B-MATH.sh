@@ -54,8 +54,8 @@ python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/
 
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}
 
-python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train" --make_crossover
-python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test" --make_crossover
+python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train"
+python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test"
 python preprocess.py --task "MATH" --split "train" --make_crossover
 python preprocess.py --task "MATH" --split "test" --make_crossover
 
@@ -112,7 +112,9 @@ python test.py --repo_id lhkhiem28/${experiment_name} --folder_path checkpoints/
 
 dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}; bash eval.sh lhkhiem28/${experiment_name}
 
-python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train" --make_crossover
-python inference.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test" --make_crossover
+python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "train"
+python make_crossover.py --repo_id lhkhiem28/${experiment_name} --task "MATH" --split "test"
 python preprocess.py --task "MATH" --split "train" --make_crossover
 python preprocess.py --task "MATH" --split "test" --make_crossover
+
+dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover

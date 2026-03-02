@@ -1,5 +1,6 @@
 import argparse
 import tqdm
+import json
 from utils import *
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
@@ -31,15 +32,18 @@ if __name__ == "__main__":
         )
     else:
         if args.make_crossover:
-            pass
+            with open(f"../EvoGRPO-datasets/{args.task}/{args.split}_evo.json", "r") as f:
+                dataset = json.load(f)
+            dataset = Dataset.from_list(dataset)
+            dataset = DatasetDict({args.split: dataset})
         else:
-            data_source = "lhkhiem28/EvoGRPO-datasets"
-            print(f"Loading the {data_source}/{args.task} dataset from huggingface...", flush=True)
-            dataset = load_dataset(
-                data_source, args.task
-            )
-            dataset = dataset[args.split]
-            dataset = dataset.map(function=make_map_fn(args.split), with_indices=True)
+            with open(f"../EvoGRPO-datasets/{args.task}/{args.split}.json", "r") as f:
+                dataset = json.load(f)
+            dataset = Dataset.from_list(dataset)
+            dataset = DatasetDict({args.split: dataset})
+
+        dataset = dataset[args.split]
+        dataset = dataset.map(function=make_map_fn(args.split, args.make_crossover), with_indices=True)
 
         generator = LLM(model=args.repo_id, tensor_parallel_size=1)
 
