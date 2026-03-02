@@ -16,6 +16,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--task")
     parser.add_argument("--split", default="test")
+    parser.add_argument("--make_crossover", action="store_true", default=False)
     parser.add_argument("--folder_path")
     parser.add_argument("--repo_id")
     args = parser.parse_args()
@@ -29,13 +30,16 @@ if __name__ == "__main__":
             folder_path=args.folder_path
         )
     else:
-        data_source = "lhkhiem28/EvoGRPO-datasets"
-        print(f"Loading the {data_source}/{args.task} dataset from huggingface...", flush=True)
-        dataset = load_dataset(
-            data_source, args.task
-        )
-        dataset = dataset[args.split]
-        dataset = dataset.map(function=make_map_fn(args.split), with_indices=True)
+        if args.make_crossover:
+            pass
+        else:
+            data_source = "lhkhiem28/EvoGRPO-datasets"
+            print(f"Loading the {data_source}/{args.task} dataset from huggingface...", flush=True)
+            dataset = load_dataset(
+                data_source, args.task
+            )
+            dataset = dataset[args.split]
+            dataset = dataset.map(function=make_map_fn(args.split), with_indices=True)
 
         generator = LLM(model=args.repo_id, tensor_parallel_size=1)
 
