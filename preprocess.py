@@ -1,5 +1,6 @@
 import argparse
 import tqdm
+import json
 from utils import seed_everything, make_map_fn
 from datasets import load_dataset
 from datasets import Dataset, DatasetDict
@@ -15,7 +16,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.make_crossover:
-        import json
         with open(f"../EvoGRPO-datasets/{args.task}/{args.split}_evo.json", "r") as f:
             dataset = json.load(f)
         dataset = Dataset.from_list(dataset)
@@ -34,7 +34,6 @@ if __name__ == "__main__":
     local_dir = os.path.join(os.path.expanduser(args.save_dir), args.task)
     dataset.to_parquet(os.path.join(local_dir, f"{args.split}.parquet" if not args.make_crossover else f"{args.split}_evo.parquet"))
 
-    import json
     example = dataset[0]
     with open(os.path.join(local_dir, f"{args.split}_example.json" if not args.make_crossover else f"{args.split}_evo_example.json"), "w") as f:
         json.dump(example, f, indent=2)

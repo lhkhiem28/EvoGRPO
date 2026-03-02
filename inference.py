@@ -1,5 +1,6 @@
 import argparse
 import tqdm
+import json
 from utils import *
 from datasets import load_dataset
 from vllm import LLM, SamplingParams
@@ -46,6 +47,5 @@ if __name__ == "__main__":
                     "answer": ground_truth,
                 })
 
-        import json
         with open(f"../EvoGRPO-datasets/{args.task}/{args.split}_evo.json", "w") as f:
             json.dump(dataset_evo, f, indent=4)
