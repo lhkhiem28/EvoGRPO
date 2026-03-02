@@ -2,7 +2,7 @@ import argparse
 import tqdm
 import json
 from utils import *
-from datasets import load_dataset
+from datasets import Dataset, DatasetDict
 from vllm import LLM, SamplingParams
 from verl.utils.reward_score import math_reward
 

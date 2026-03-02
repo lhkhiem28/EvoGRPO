@@ -2,7 +2,6 @@ import argparse
 import tqdm
 import json
 from utils import seed_everything, make_map_fn
-from datasets import load_dataset
 from datasets import Dataset, DatasetDict
 
 if __name__ == "__main__":
