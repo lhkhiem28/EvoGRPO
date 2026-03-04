@@ -141,7 +141,7 @@ python preprocess.py --make_crossover --task "AIME25"
 python preprocess.py --make_crossover --task "Minerva"
 python preprocess.py --make_crossover --task "GPQA"
 
-# dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover
+dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover
 
 project_name="EvoGRPO"
 experiment_name="Qwen2.5-1.5B-GRPO-2"
@@ -283,4 +283,4 @@ python preprocess.py --make_crossover --task "AIME25"
 python preprocess.py --make_crossover --task "Minerva"
 python preprocess.py --make_crossover --task "GPQA"
 
-# dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover
+dos2unix eval.sh; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover; bash eval.sh lhkhiem28/${experiment_name} --make_crossover
