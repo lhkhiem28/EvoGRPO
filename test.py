@@ -3,8 +3,19 @@ import tqdm
 import json
 from utils import *
 from datasets import Dataset, DatasetDict
+from transformers import AutoTokenizer
 from vllm import LLM, SamplingParams
 from verl.utils.reward_score import math_reward
+
+def apply_chat_template(prompt: str, tokenizer):
+    messages = [
+        {"role": "user", "content": prompt}
+    ]
+    prompt = tokenizer.apply_chat_template(
+        messages, add_generation_prompt=True, tokenize=False
+    )
+
+    return prompt
 
 def pass_at_k(n, c, k):
     if n - c < k:
@@ -45,12 +56,15 @@ if __name__ == "__main__":
         dataset = dataset[args.split]
         dataset = dataset.map(function=make_map_fn(args.split, args.make_crossover), with_indices=True)
 
+        tokenizer = AutoTokenizer.from_pretrained(args.repo_id)
         generator = LLM(model=args.repo_id, tensor_parallel_size=1)
 
         pass_1, pass_2, pass_4, pass_8, pass_16, pass_32, pass_64, pass_128 = [], [], [], [], [], [], [], []
         for i in tqdm.tqdm(range(0, len(dataset), 128)):
             batch = dataset[i:i+128]
             batch_prompts = [item[0]["content"] for item in batch["prompt"]]
+            if args.make_crossover:
+                batch_prompts = [apply_chat_template(prompt, tokenizer) for prompt in batch_prompts]
 
             batch_outputs = generator.generate(batch_prompts, SamplingParams(
                 max_tokens=3072, n=128, 
